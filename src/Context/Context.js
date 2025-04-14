@@ -29,7 +29,9 @@ const ContextProvider = (props) => {
                 newArray += "<b>"+responseArray[i]+"</b>"
             }
         }
-        setResponse(newArray);
+
+        let newResponse = newArray.split("*").join("</br>")
+        setResponse(newResponse);
         setLoading(false);
         setInput('');
     };
