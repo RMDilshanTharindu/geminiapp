@@ -28,9 +28,11 @@ const ContextProvider = (props) => {
             ...prev,
             {
                 firstPropmt:firstPrompt,
-                chathistory:chatHistory
+                chathistory:currentChat
             }
         ])
+        setFirstPrompt('');
+        setCurrentChat([]);
     }
     
     const onSent = async (prompt, e={ preventDefault: () => {} }) => {
