@@ -19,18 +19,24 @@ const Main = () => {
       setPrompt('');
     };
 
+    
+
 
   return (
     <div className='main'>
         <div className='nav'>
-            <p>Gemini</p>
+            <p>Gemini 2.0 Flash- Clone</p>
             <img src={assets.user_icon} alt='' />
         </div>
         <div className='main-container'>
+            {chatHistory.length===0?<>
             <div className='greet'>
                 <p><span>Hello, Dev.</span></p>
                 <p>How can i help you today?</p>
             </div>
+            </>:<></>}
+
+            {chatHistory.length===0?<>
             <div className='cards'>
                 <div className='card'>
                     <p>Suggest beautiful place to see on upcoming road trip</p>
@@ -49,6 +55,9 @@ const Main = () => {
                     <img src={assets.code_icon} alt='' />
                 </div>
             </div>
+            </>:<></>}
+            
+
             <div className='chat-history'>
                     {chatHistory.map((msg, index) => (
                         <div
