@@ -22,7 +22,8 @@ const ContextProvider = (props) => {
         e.preventDefault();
         setLoading(true);
         setShowResults(true);
-        setRecentPrompt(input)
+        setRecentPrompt(input);
+        setPrevPrompts(prev=>[...prev,input])
         const reply = await chatHandler(input);
         let responseArray = reply.split("**");
         let newArray;
