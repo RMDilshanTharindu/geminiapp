@@ -48,14 +48,22 @@ const Main = () => {
                     <p>Imporve the readability of fallowing code</p>
                     <img src={assets.code_icon} alt='' />
                 </div>
-                <div>
-                   {chatHistory.map((msg, index) => (
-                        <p key={index}>
-                           <strong>{msg.role === 'user' ? 'You' : 'Gemini'}:</strong> {msg.text}
-                        </p>
-                    ))}
-      </div>
             </div>
+            <div className='chat-history'>
+                    {chatHistory.map((msg, index) => (
+                        <div
+                            key={index}
+                            className={`message-container ${msg.role === 'user' ? 'message-right' : 'message-left'}`}
+                        >
+                            <div
+                            className={`message-bubble ${msg.role === 'user' ? 'user-bubble' : ''}`}
+                            >
+                            <strong>{msg.role === 'user' ? 'You' : 'Gemini'}:</strong> {msg.text}
+                            </div>
+                        </div>
+                    ))}
+            </div>
+
             <div className='main-bottom'>
                 <div className='search-box'>
                     <input type='text' value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder='Enter a promt here'/>  
