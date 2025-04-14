@@ -5,14 +5,19 @@ import { useState } from 'react';
 
 const Main = () => {
 
-  const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const reply = await chatHandler(prompt);
-    setResponse(reply);
-  };
+    const [prompt, setPrompt] = useState('');
+    const [chatHistory, setChatHistory] = useState([]);
+  
+    const submitPrompt = async () => {
+      if (!prompt.trim()) return;
+  
+      const userMessage = { role: 'user', text: prompt };
+      const response = await chatHandler(prompt);
+      const aiMessage = { role: 'ai', text: response };
+  
+      setChatHistory([...chatHistory, userMessage, aiMessage]);
+      setPrompt('');
+    };
 
 
   return (
@@ -44,8 +49,12 @@ const Main = () => {
                     <img src={assets.code_icon} alt='' />
                 </div>
                 <div>
-                    <p>{response}</p>
-                </div>
+                   {chatHistory.map((msg, index) => (
+                        <p key={index}>
+                           <strong>{msg.role === 'user' ? 'You' : 'Gemini'}:</strong> {msg.text}
+                        </p>
+                    ))}
+      </div>
             </div>
             <div className='main-bottom'>
                 <div className='search-box'>
@@ -53,7 +62,7 @@ const Main = () => {
                     <div>
                         <img src={assets.gallery_icon} alt='' />
                         <img src={assets.mic_icon} alt='' />
-                        <img src={assets.send_icon} alt='' onClick={handleSubmit} />
+                        <img src={assets.send_icon} alt='' onClick={submitPrompt} />
                     </div>
                 </div>
                 <p className='bottom-info'>
