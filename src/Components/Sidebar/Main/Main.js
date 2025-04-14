@@ -1,7 +1,20 @@
 import './Main.css'
 import { assets } from '../../../assets/assets'
+import chatHandler from '../../../Gemini/ChatHandler';
+import { useState } from 'react';
 
 const Main = () => {
+
+  const [prompt, setPrompt] = useState('');
+  const [response, setResponse] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const reply = await chatHandler(prompt);
+    setResponse(reply);
+  };
+
+
   return (
     <div className='main'>
         <div className='nav'>
@@ -30,14 +43,17 @@ const Main = () => {
                     <p>Imporve the readability of fallowing code</p>
                     <img src={assets.code_icon} alt='' />
                 </div>
+                <div>
+                    <p>{response}</p>
+                </div>
             </div>
             <div className='main-bottom'>
                 <div className='search-box'>
-                    <input type='text' placeholder='Enter a promt here'/>
+                    <input type='text' value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder='Enter a promt here'/>  
                     <div>
                         <img src={assets.gallery_icon} alt='' />
                         <img src={assets.mic_icon} alt='' />
-                        <img src={assets.send_icon} alt='' />
+                        <img src={assets.send_icon} alt='' onClick={handleSubmit} />
                     </div>
                 </div>
                 <p className='bottom-info'>
