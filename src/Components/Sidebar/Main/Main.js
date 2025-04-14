@@ -1,18 +1,12 @@
 import './Main.css'
 import { assets } from '../../../assets/assets'
 import chatHandler from '../../../Gemini/ChatHandler';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { Context } from '../../../Context/Context';
 
 const Main = () => {
 
-  const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const reply = await chatHandler(prompt);
-    setResponse(reply);
-  };
+    const {onSent,recentPrompt,showResults,loading,response,setInput,input} = useContext(Context)
 
 
   return (
@@ -22,6 +16,9 @@ const Main = () => {
             <img src={assets.user_icon} alt='' />
         </div>
         <div className='main-container'>
+
+            {!showResults
+            ?<>
             <div className='greet'>
                 <p><span>Hello, Dev.</span></p>
                 <p>How can i help you today?</p>
@@ -43,17 +40,27 @@ const Main = () => {
                     <p>Imporve the readability of fallowing code</p>
                     <img src={assets.code_icon} alt='' />
                 </div>
-                <div>
-                    <p>{response}</p>
+                
+            </div>
+            </>
+            :<div className='result'>
+                <div className='result-title'>
+                    <img src={assets.user_icon} alt='' />
+                    <p>{recentPrompt}</p>
+                </div>
+                <div className='result-data'>
+                    <img src={assets.gemini_icon} alt='' />
+                    <p dangerouslySetInnerHTML={{__html:response}}></p> 
                 </div>
             </div>
+            }
             <div className='main-bottom'>
                 <div className='search-box'>
-                    <input type='text' value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder='Enter a promt here'/>  
+                    <input onChange={(e)=>setInput(e.target.value)} value={input} type='text' placeholder='Enter a promt here'/>  
                     <div>
                         <img src={assets.gallery_icon} alt='' />
                         <img src={assets.mic_icon} alt='' />
-                        <img src={assets.send_icon} alt='' onClick={handleSubmit} />
+                        <img src={assets.send_icon} alt='' onClick={(e)=>onSent(input,e)} />
                     </div>
                 </div>
                 <p className='bottom-info'>
