@@ -17,13 +17,17 @@ const ContextProvider = (props) => {
             setResponse(prev => prev+nextWord);
         },75*index);
     }
+
+    const newChat = () =>{
+        setLoading(false)
+        setShowResults(false)
+    }
     
     const onSent = async (prompt, e={ preventDefault: () => {} }) => {
         e.preventDefault();
         setLoading(true);
         setShowResults(true);
     
-        //let finalPrompt = prompt !== undefined ? prompt : input;
         let finalPrompt
         if(prompt !== undefined){
             finalPrompt=prompt;
@@ -72,7 +76,8 @@ const ContextProvider = (props) => {
         loading,
         response,
         input,
-        setInput
+        setInput,
+        newChat
     };
 
     return (
