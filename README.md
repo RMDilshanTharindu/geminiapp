@@ -1,70 +1,219 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+### 📄 Final `README.md`
 
-In the project directory, you can run:
+```markdown
+# 💬 Simple Chat App using React + Express + Google Gemini API
 
-### `npm start`
+This is a full-stack mini chatbot app using:
+- **React** frontend
+- **Express.js** backend
+- **Google Gemini API (Flash 2.0)** to generate AI responses
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📦 Tech Stack
 
-### `npm test`
+- Frontend: React.js
+- Backend: Node.js + Express
+- AI: Google Gemini 2.0 Flash via official SDK
+- CORS: Enabled using `cors` middleware for cross-origin communication
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 📁 Project Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+project-root/
+├── backend/
+│   ├── index.js       # Express server
+│   └── gemini.js      # Google Gemini API wrapper
+│
+├── frontend/
+│   └── src/
+│       └── components/
+│           ├── Chat.js          # React chat component
+│           └── chatHandler.js   # Handles sending prompts to server
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `backend/index.js`
 
-### `npm run eject`
+```js
+import express from 'express';
+import main from './gemini.js';
+import cors from 'cors';
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+const server = express();
+server.use(express.json());
+server.use(cors()); // Enable CORS
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+server.post('/chat', async (req, res) => {
+  const { promt } = req.body;
+  const result = await main(promt);
+  res.status(201).json(result);
+});
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+server.listen(4000, () => {
+  console.log('server is running');
+});
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### `backend/gemini.js`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+import { GoogleGenAI } from "@google/genai";
 
-### Code Splitting
+const ai = new GoogleGenAI({
+  apiKey: "AIzaSyA1TwO***************" // ⚠️ Replace with your actual API key
+});
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+async function main(promt) {
+  const response = await ai.models.generateContent({
+    model: "gemini-2.0-flash",
+    contents: promt,
+  });
+  return response.text;
+}
 
-### Analyzing the Bundle Size
+export default main;
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 🔑 How I Got the Gemini API Key
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. Go to [Google AI Studio](https://aistudio.google.com/prompts/new_chat)
+2. Sign in with your Google account
+3. Click your profile picture → `Get API Key`
+4. Copy the key and use it in your backend (keep it secure!)
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## ⚙️ Handling CORS
 
-### Deployment
+By default, modern browsers block requests from one origin to another due to **CORS policy**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### ✅ Solution: Enable CORS in Express
 
-### `npm run build` fails to minify
+Install CORS:
+```bash
+npm install cors
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Use it in your server:
+```js
+import cors from 'cors';
+server.use(cors());
+```
+
+This allows your React app (`localhost:3000`) to talk to your Node backend (`localhost:4000`) without CORS errors.
+
+---
+
+## 💻 Frontend Overview
+
+### `chatHandler.js`
+
+```js
+const chatHandler = async (prompt) => {
+  try {
+    const res = await fetch('http://localhost:4000/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ promt: prompt }),
+    });
+
+    const data = await res.json();
+    return Array.isArray(data) ? data.join(' ') : data;
+  } catch {
+    return 'Something went wrong!';
+  }
+};
+
+export default chatHandler;
+```
+
+---
+
+### `Chat.js`
+
+```jsx
+import React, { useState } from 'react';
+import chatHandler from './chatHandler';
+
+const Chat = () => {
+  const [prompt, setPrompt] = useState('');
+  const [response, setResponse] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const reply = await chatHandler(prompt);
+    setResponse(reply);
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+        />
+        <button type="submit">Send</button>
+      </form>
+      <p>{response}</p>
+    </div>
+  );
+};
+
+export default Chat;
+```
+
+---
+
+## 🚀 Running the App
+
+### Backend
+
+```bash
+cd backend
+npm install
+node index.js
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+---
+
+## 🔐 Important Notes
+
+- **Never expose your API key in public repos**.
+- Use environment variables (`.env`) to hide it in production.
+- Use HTTPS and API restrictions for added safety.
+
+---
+
+## 🔮 Future Upgrades
+
+- Better chat history UI
+- Add markdown / image support
+- Save conversations
+- Connect Gemini Pro model
+
+---
+
+## 👨‍💻 Author
+
+Made by **Dilshan Tharindu** ❤️
