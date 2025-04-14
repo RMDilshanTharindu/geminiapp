@@ -12,7 +12,11 @@ const ContextProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState('');
 
-    const delayPara = (index,nextWord) =>{}
+    const delayPara = (index,nextWord) =>{
+        setTimeout(function() {
+            setResponse(prev => prev+nextWord);
+        },75*index);
+    }
     
     const onSent = async (input,e) => {
         e.preventDefault();
@@ -30,7 +34,12 @@ const ContextProvider = (props) => {
             }
         }
 
-        let newResponse = newArray.split("*").join("</br>")
+        let newResponse = newArray.split("*").join("</br>");
+        let newResponseArray = newResponse.split(" ");
+        for(let i = 0; i<newResponseArray.length;i++){
+            const nextWord = newResponseArray[i];
+            delayPara(i,nextWord+" ")
+        }
         setResponse(newResponse);
         setLoading(false);
         setInput('');
