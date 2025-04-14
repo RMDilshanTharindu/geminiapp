@@ -26,7 +26,7 @@ const ContextProvider = (props) => {
         setPrevPrompts(prev=>[...prev,input])
         const reply = await chatHandler(input);
         let responseArray = reply.split("**");
-        let newArray;
+        let newArray = "";
         for (let i=0; i<responseArray.length; i++){
             if(i===0 || i%2 !==1){
                 newArray += responseArray[i]
