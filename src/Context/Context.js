@@ -23,10 +23,19 @@ const ContextProvider = (props) => {
         setLoading(true);
         setShowResults(true);
     
-        let finalPrompt = prompt !== undefined ? prompt : input;
+        //let finalPrompt = prompt !== undefined ? prompt : input;
+        let finalPrompt
+        if(prompt !== undefined){
+            finalPrompt=prompt;
+            if(!prevPrompts.includes(finalPrompt)){
+                setPrevPrompts(prev => [...prev, finalPrompt]); 
+            }
+        }else{
+            finalPrompt=input;
+            setPrevPrompts(prev => [...prev, finalPrompt]);
+        }
         
         
-        setPrevPrompts(prev => [...prev, finalPrompt]);
         setRecentPrompt(finalPrompt);
         setResponse('');
     
