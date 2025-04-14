@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import chatHandler from "../Gemini/ChatHandler";
 
 export const Context = createContext();
@@ -22,13 +22,33 @@ const ContextProvider = (props) => {
         },75*index);
     }
 
+    const loadOldChats = (visitedprompt) =>{
+        
+        
+        chatHistory.map((item, index) => {
+            if(item.firstPrompt === visitedprompt){
+                setCurrentChat(item.chathistory)
+                setShowResults(true);
+            }
+            console.log(currentChat)
+            
+          });
+    }
+
+    useEffect(() => {
+        if (currentChat.length > 0) {
+            console.log("Old chat loaded:", currentChat);
+            
+        }
+    }, [currentChat]);
+
     const newChat = () =>{
         setLoading(false)
         setShowResults(false)
         setChatHistory(prev =>[
             ...prev,
             {
-                firstPropmt:firstPrompt,
+                firstPrompt:firstPrompt,
                 chathistory:currentChat
             }
         ])
@@ -60,7 +80,8 @@ const ContextProvider = (props) => {
                 finalPrompt
             ]);
         }
-        console.log(firstPromptList);
+       
+        console.log(chatHistory)
 
         setRecentPrompt(finalPrompt);
         setResponse('');
@@ -111,7 +132,9 @@ const ContextProvider = (props) => {
         setInput,
         newChat,
         currentChat,
-        firstPromptList
+        firstPromptList,
+        chatHistory,
+        loadOldChats
     };
 
     return (

@@ -1,13 +1,19 @@
 import './Main.css'
 import { assets } from '../../../assets/assets'
 import chatHandler from '../../../Gemini/ChatHandler';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Context } from '../../../Context/Context';
 
 const Main = () => {
 
     const {onSent,recentPrompt,showResults,loading,response,setInput,input,currentChat} = useContext(Context)
-
+ 
+    useEffect(() => {
+            if (currentChat.length > 0) {
+                console.log("Old chat loaded:", currentChat);
+                
+            }
+        }, [currentChat]);
 
   return (
     <div className='main'>
