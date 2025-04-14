@@ -12,6 +12,8 @@ const ContextProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState('');
     const [currentChat,setCurrentChat] = useState([]);
+    const [chatHistory,setChatHistory] = useState([]);
+    const [firstPrompt,setFirstPrompt] = useState('');
 
     const delayPara = (index,nextWord) =>{
         setTimeout(function() {
@@ -22,6 +24,13 @@ const ContextProvider = (props) => {
     const newChat = () =>{
         setLoading(false)
         setShowResults(false)
+        setChatHistory(prev =>[
+            ...prev,
+            {
+                firstPropmt:firstPrompt,
+                chathistory:chatHistory
+            }
+        ])
     }
     
     const onSent = async (prompt, e={ preventDefault: () => {} }) => {
@@ -37,10 +46,14 @@ const ContextProvider = (props) => {
             }
         }else{
             finalPrompt=input;
+            console.log('this is user inout')
             setPrevPrompts(prev => [...prev, finalPrompt]);
         }
+
+        if(currentChat.length===0) setFirstPrompt(finalPrompt)
         
-        
+        console.log(currentChat);
+        console.log(firstPrompt);
         setRecentPrompt(finalPrompt);
         setResponse('');
     
@@ -54,7 +67,7 @@ const ContextProvider = (props) => {
             }
           ]);
 
-        console.log(currentChat)
+        
     
         let responseArray = response1.split("**");
         let newArray = "";
