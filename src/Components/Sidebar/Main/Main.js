@@ -6,7 +6,7 @@ import { Context } from '../../../Context/Context';
 
 const Main = () => {
 
-    const {onSent,recentPrompt,showResults,loading,response,setInput,input} = useContext(Context)
+    const {onSent,recentPrompt,showResults,loading,response,setInput,input,currentChat} = useContext(Context)
 
 
   return (
@@ -44,12 +44,32 @@ const Main = () => {
             </div>
             </>
             :<div className='result'>
-                <div className='result-title'>
+                <div>
+                    {currentChat.map((chat, index) => (
+                        <div key={index}>
+                         <div className='result-title'>
+                    <img src={assets.user_icon} alt='' />
+                    <p>{chat.user}</p>
+                </div>
+                <div className='result-data'>
+                    <img src={assets.gemini_icon} alt='' /> 
+                    {loading
+                    ?<div className='loader'>
+                        <hr/>
+                        <hr/>
+                        <hr/>
+                    </div>
+                    :<p dangerouslySetInnerHTML={{__html:chat.gemini}}></p> 
+                     }</div>
+                        </div>
+                    ))}
+                </div>
+                {/* <div className='result-title'>
                     <img src={assets.user_icon} alt='' />
                     <p>{recentPrompt}</p>
                 </div>
                 <div className='result-data'>
-                    <img src={assets.gemini_icon} alt='' />
+                    <img src={assets.gemini_icon} alt='' /> 
                     {loading
                     ?<div className='loader'>
                         <hr/>
@@ -59,7 +79,8 @@ const Main = () => {
                     :<p dangerouslySetInnerHTML={{__html:response}}></p> 
                      }
                     
-                </div>
+                </div> */}
+                
             </div>
             }
             <div className='main-bottom'>

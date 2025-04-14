@@ -11,6 +11,7 @@ const ContextProvider = (props) => {
     const [showResults, setShowResults] = useState(false);
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState('');
+    const [currentChat,setCurrentChat] = useState([]);
 
     const delayPara = (index,nextWord) =>{
         setTimeout(function() {
@@ -44,6 +45,16 @@ const ContextProvider = (props) => {
         setResponse('');
     
         const response1 = await chatHandler(finalPrompt);
+
+        setCurrentChat(prev => [
+            ...prev,
+            {
+              user: finalPrompt,
+              gemini: response1
+            }
+          ]);
+
+        console.log(currentChat)
     
         let responseArray = response1.split("**");
         let newArray = "";
@@ -77,7 +88,8 @@ const ContextProvider = (props) => {
         response,
         input,
         setInput,
-        newChat
+        newChat,
+        currentChat
     };
 
     return (
