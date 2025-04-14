@@ -24,7 +24,6 @@ const ContextProvider = (props) => {
 
     const loadOldChats = (visitedprompt) =>{
         
-        
         chatHistory.map((item, index) => {
             if(item.firstPrompt === visitedprompt){
                 setCurrentChat(item.chathistory)
