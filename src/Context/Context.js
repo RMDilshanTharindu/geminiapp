@@ -14,6 +14,7 @@ const ContextProvider = (props) => {
     const [currentChat,setCurrentChat] = useState([]);
     const [chatHistory,setChatHistory] = useState([]);
     const [firstPrompt,setFirstPrompt] = useState('');
+    const [firstPromptList,setFirstPromptList] = useState([]);
 
     const delayPara = (index,nextWord) =>{
         setTimeout(function() {
@@ -52,10 +53,15 @@ const ContextProvider = (props) => {
             setPrevPrompts(prev => [...prev, finalPrompt]);
         }
 
-        if(currentChat.length===0) setFirstPrompt(finalPrompt)
-        
-        console.log(currentChat);
-        console.log(firstPrompt);
+        if(currentChat.length===0){
+            setFirstPrompt(finalPrompt);
+            setFirstPromptList(prev=>[
+                ...prev,
+                finalPrompt
+            ]);
+        }
+        console.log(firstPromptList);
+
         setRecentPrompt(finalPrompt);
         setResponse('');
     
@@ -104,7 +110,8 @@ const ContextProvider = (props) => {
         input,
         setInput,
         newChat,
-        currentChat
+        currentChat,
+        firstPromptList
     };
 
     return (
