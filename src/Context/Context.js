@@ -130,13 +130,13 @@ const ContextProvider = (props) => {
 
         const response1 = await chatHandler(finalPrompt);
 
-        setCurrentChat(prev => [
-            ...prev,
-            {
-                user: finalPrompt,
-                gemini: response1
-            }
-        ]);
+        // setCurrentChat(prev => [
+        //     ...prev,
+        //     {
+        //         user: finalPrompt,
+        //         gemini: response1
+        //     }
+        // ]);
 
         // Response formatting with delay
         let responseArray = response1.split("**");
@@ -149,12 +149,20 @@ const ContextProvider = (props) => {
             }
         }
 
-        let newResponse = newArray.split("*").join("</br>");
-        let newResponseArray = newResponse.split(" ");
-        for (let i = 0; i < newResponseArray.length; i++) {
-            const nextWord = newResponseArray[i];
-            delayPara(i, nextWord + " ");
-        }
+        setCurrentChat(prev => [
+            ...prev,
+            {
+                user: finalPrompt,
+                gemini: newArray
+            }
+        ]);
+
+        // let newResponse = newArray.split("*").join("</br>");
+        // let newResponseArray = newResponse.split(" ");
+        // for (let i = 0; i < newResponseArray.length; i++) {
+        //     const nextWord = newResponseArray[i];
+        //     delayPara(i, nextWord + " ");
+        // }
 
         setLoading(false);
         setInput('');
