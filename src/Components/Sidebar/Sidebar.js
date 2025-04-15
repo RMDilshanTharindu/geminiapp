@@ -6,13 +6,12 @@ import { Context } from '../../Context/Context';
 const Sidebar = () => {
 
     const[extended,setExtended] = useState(false);
-    const {onSent,prevPrompts,setRecentPrompt,newChat,firstPromptList,loadOldChats,uniqueFirstPromptList} = useContext(Context);
+    const {newChat,loadOldChats,uniqueFirstPromptList} = useContext(Context);
 
     const LoadPrompt = async (prompt) =>{
         console.log(prompt);
         loadOldChats(prompt)
-        //setRecentPrompt(prompt)
-        //await onSent(prompt)
+        
     }
 
   return (

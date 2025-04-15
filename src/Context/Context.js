@@ -18,12 +18,7 @@ const ContextProvider = (props) => {
 
     const isFirstPromptSent = useRef(false);
 
-    const delayPara = (index, nextWord) => {
-        setTimeout(function () {
-            setResponse(prev => prev + nextWord);
-        }, 75 * index);
-    };
-
+    
     const loadOldChats = (visitedprompt) => {
         // 💾 Save current chat before switching (if it has data)
         if (currentChat.length > 0 && firstPrompt) {
@@ -130,14 +125,6 @@ const ContextProvider = (props) => {
 
         const response1 = await chatHandler(finalPrompt);
 
-        // setCurrentChat(prev => [
-        //     ...prev,
-        //     {
-        //         user: finalPrompt,
-        //         gemini: response1
-        //     }
-        // ]);
-
         // Response formatting with delay
         let responseArray = response1.split("**");
         let newArray = "";
@@ -158,13 +145,6 @@ const ContextProvider = (props) => {
                 gemini: newResponse
             }
         ]);
-
-        
-        // let newResponseArray = newResponse.split(" ");
-        // for (let i = 0; i < newResponseArray.length; i++) {
-        //     const nextWord = newResponseArray[i];
-        //     delayPara(i, nextWord + " ");
-        // }
 
         setLoading(false);
         setInput('');
