@@ -1,12 +1,36 @@
 import './Main.css'
 import { assets } from '../../../assets/assets'
-import { useContext} from 'react';
+import { useContext, useEffect, useState} from 'react';
 import { Context } from '../../../Context/Context';
 
 const Main = () => {
 
     const {onSent,showResults,loading,setInput,input,currentChat} = useContext(Context)
- 
+    const [chatResponce,setChatResponce] = useState('')
+
+    useEffect(() => {
+        if (!loading && currentChat.length > 0) {
+          const last = currentChat[currentChat.length - 1].gemini;
+          let i = 0;
+          
+          // ✅ Reset the previous animation
+          setChatResponce('');
+      
+          const interval = setInterval(() => {
+            if (i < last.length) {
+              setChatResponce(prev => prev + last[i]);
+              i++;
+            } else {
+              clearInterval(interval);
+            }
+          }, 20); // Typing speed
+      
+          return () => clearInterval(interval); // Clear on unmount/change
+        }
+      }, [currentChat, loading]);
+      
+    
+    
 
   return (
     <div className='main'>
@@ -44,24 +68,34 @@ const Main = () => {
             </>
             :<div className='result'>
                 <div>
-                    {currentChat.map((chat, index) => (
-                        <div key={index}>
-                         <div className='result-title'>
+                {currentChat.map((chat, index) => (
+                <div key={index}>
+                    <div className='result-title'>
                     <img src={assets.user_icon} alt='' />
                     <p>{chat.user}</p>
-                </div>
-                <div className='result-data'>
-                    <img src={assets.gemini_icon} alt='' /> 
-                    {loading
-                    ?<div className='loader'>
-                        <hr/>
-                        <hr/>
-                        <hr/>
                     </div>
-                    :<p dangerouslySetInnerHTML={{__html:chat.gemini}}></p> 
-                     }</div>
+                    <div className='result-data'>
+                    <img src={assets.gemini_icon} alt='' />
+                    {loading && index === currentChat.length - 1 ? (
+                        <div className='loader'>
+                        <hr />
+                        <hr />
+                        <hr />
                         </div>
-                    ))}
+                    ) : (
+                        <p
+                        dangerouslySetInnerHTML={{
+                            __html:
+                            index === currentChat.length - 1
+                                ? chatResponce
+                                : chat.gemini,
+                        }}
+                        ></p>
+                    )}
+                    </div>
+                </div>
+                ))}
+
                 </div>
                 
                 

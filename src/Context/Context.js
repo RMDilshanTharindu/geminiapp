@@ -62,7 +62,7 @@ const ContextProvider = (props) => {
 
     useEffect(() => {
         if (currentChat.length > 0) {
-            console.log("Old chat loaded:", currentChat);
+            console.log("current chat", currentChat);
         }
     }, [currentChat]);
 
@@ -150,7 +150,7 @@ const ContextProvider = (props) => {
         }
 
          let newResponse = newArray.split("*").join("</br>");
-         //let newResponseArray = newResponse.split(" ");
+         
         setCurrentChat(prev => [
             ...prev,
             {
@@ -159,7 +159,7 @@ const ContextProvider = (props) => {
             }
         ]);
 
-        // let newResponse = newArray.split("*").join("</br>");
+        
         // let newResponseArray = newResponse.split(" ");
         // for (let i = 0; i < newResponseArray.length; i++) {
         //     const nextWord = newResponseArray[i];
