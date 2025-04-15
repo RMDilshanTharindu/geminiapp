@@ -1,6 +1,6 @@
 import './Main.css'
 import { assets } from '../../../assets/assets'
-import { useContext, useEffect, useState} from 'react';
+import { useContext, useEffect, useRef, useState} from 'react';
 import { Context } from '../../../Context/Context';
 
 const Main = () => {
@@ -8,26 +8,46 @@ const Main = () => {
     const {onSent,showResults,loading,setInput,input,currentChat} = useContext(Context)
     const [chatResponce,setChatResponce] = useState('')
 
+    const intervalRef = useRef(null);
+
     useEffect(() => {
         if (!loading && currentChat.length > 0) {
           const last = currentChat[currentChat.length - 1].gemini;
-          let i = 0;
-          
-          // ✅ Reset the previous animation
+      
+          if (!last) return;
+      
+          // Reset chat response immediately
           setChatResponce('');
+          let i = 0;
       
-          const interval = setInterval(() => {
-            if (i < last.length) {
-              setChatResponce(prev => prev + last[i]);
-              i++;
-            } else {
-              clearInterval(interval);
-            }
-          }, 20); // Typing speed
+          // Clear any previous interval
+          if (intervalRef.current) clearInterval(intervalRef.current);
       
-          return () => clearInterval(interval); // Clear on unmount/change
+          // Start interval after short delay to ensure reset state applied
+          const timeout = setTimeout(() => {
+            intervalRef.current = setInterval(() => {
+              setChatResponce(prev => {
+                if (i < last.length) {
+                  const updated = prev + last.charAt(i);
+                  i++;
+                  return updated;
+                } else {
+                  clearInterval(intervalRef.current);
+                  return prev; // Don't add anything else
+                }
+              });
+            }, 20);
+          }, 10); // small delay ensures chatResponce is fully cleared
+      
+          // Cleanup both timeout and interval
+          return () => {
+            clearTimeout(timeout);
+            if (intervalRef.current) clearInterval(intervalRef.current);
+          };
         }
       }, [currentChat, loading]);
+      
+      
       
     
     
