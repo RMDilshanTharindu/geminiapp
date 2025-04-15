@@ -36,6 +36,7 @@
 .sidebar .recent{
     display: flex;
     flex-direction: column;
+    animation: fadeIn 1.5s;
 }
 
 .sidebar .recent-title{
@@ -68,5 +69,23 @@
     padding-right: 10px;
     cursor: pointer;
 
+}
+
+
+@media (max-width:600px){
+    
+    .sidebar{
+        min-height: 100vh;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: #f0f4f9;
+        padding: 25px 15px;
+    }    
+    
+    
+       
+   
+    
 }
 

@@ -1,10 +1,11 @@
 import './Main.css'
 import { assets } from '../../../assets/assets'
-import chatHandler from '../../../Gemini/ChatHandler';
-import { useState } from 'react';
+import { useContext, useEffect, useRef, useState} from 'react';
+import { Context } from '../../../Context/Context';
 
 const Main = () => {
 
+<<<<<<< HEAD
     const [prompt, setPrompt] = useState('');
     const [chatHistory, setChatHistory] = useState([]);
   
@@ -20,7 +21,54 @@ const Main = () => {
     };
 
     
+=======
+    const {onSent,showResults,loading,setInput,input,currentChat} = useContext(Context)
+    const [chatResponce,setChatResponce] = useState('')
 
+    const intervalRef = useRef(null);
+>>>>>>> greatstacklogic
+
+    useEffect(() => {
+        if (!loading && currentChat.length > 0) {
+          const last = currentChat[currentChat.length - 1].gemini;
+      
+          if (!last) return;
+      
+          // Reset chat response immediately
+          setChatResponce('');
+          let i = 0;
+      
+          // Clear any previous interval
+          if (intervalRef.current) clearInterval(intervalRef.current);
+      
+          // Start interval after short delay to ensure reset state applied
+          const timeout = setTimeout(() => {
+            intervalRef.current = setInterval(() => {
+              setChatResponce(prev => {
+                if (i < last.length) {
+                  const updated = prev + last.charAt(i);
+                  i++;
+                  return updated;
+                } else {
+                  clearInterval(intervalRef.current);
+                  return prev; // Don't add anything else
+                }
+              });
+            }, 20);
+          }, 10); // small delay ensures chatResponce is fully cleared
+      
+          // Cleanup both timeout and interval
+          return () => {
+            clearTimeout(timeout);
+            if (intervalRef.current) clearInterval(intervalRef.current);
+          };
+        }
+      }, [currentChat, loading]);
+      
+      
+      
+    
+    
 
   return (
     <div className='main'>
@@ -29,7 +77,13 @@ const Main = () => {
             <img src={assets.user_icon} alt='' />
         </div>
         <div className='main-container'>
+<<<<<<< HEAD
             {chatHistory.length===0?<>
+=======
+
+            {!showResults
+            ?<>
+>>>>>>> greatstacklogic
             <div className='greet'>
                 <p><span>Hello, Dev.</span></p>
                 <p>How can i help you today?</p>
@@ -54,6 +108,7 @@ const Main = () => {
                     <p>Imporve the readability of fallowing code</p>
                     <img src={assets.code_icon} alt='' />
                 </div>
+<<<<<<< HEAD
             </div>
             </>:<></>}
             
@@ -73,13 +128,57 @@ const Main = () => {
                     ))}
             </div>
 
+=======
+                
+            </div>
+            </>
+            :<div className='result'>
+                <div>
+                {currentChat.map((chat, index) => (
+                <div key={index}>
+                    <div className='result-title'>
+                    <img src={assets.user_icon} alt='' />
+                    <p>{chat.user}</p>
+                    </div>
+                    <div className='result-data'>
+                    <img src={assets.gemini_icon} alt='' />
+                    {loading && index === currentChat.length - 1 ? (
+                        <div className='loader'>
+                        <hr />
+                        <hr />
+                        <hr />
+                        </div>
+                    ) : (
+                        <p
+                        dangerouslySetInnerHTML={{
+                            __html:
+                            index === currentChat.length - 1
+                                ? chatResponce
+                                : chat.gemini,
+                        }}
+                        ></p>
+                    )}
+                    </div>
+                </div>
+                ))}
+
+                </div>
+                
+                
+            </div>
+            }
+>>>>>>> greatstacklogic
             <div className='main-bottom'>
                 <div className='search-box'>
-                    <input type='text' value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder='Enter a promt here'/>  
+                    <input onChange={(e)=>setInput(e.target.value)} value={input} type='text' placeholder='Enter a promt here'/>  
                     <div>
                         <img src={assets.gallery_icon} alt='' />
                         <img src={assets.mic_icon} alt='' />
+<<<<<<< HEAD
                         <img src={assets.send_icon} alt='' onClick={submitPrompt} />
+=======
+                        {input?<img src={assets.send_icon} alt='' onClick={(e)=>onSent(input,e)} />:null}
+>>>>>>> greatstacklogic
                     </div>
                 </div>
                 <p className='bottom-info'>

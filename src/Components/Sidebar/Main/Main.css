@@ -121,6 +121,7 @@
     font-weight: 300;
 }
 
+<<<<<<< HEAD
 .chat-history{
     padding: 20px;
 }
@@ -150,3 +151,130 @@
     background-color: #e5e5ea;
   }
   
+=======
+.result{
+    padding: 0px 5%;
+    max-height: 70vh;
+    overflow-y: scroll;
+}
+
+.result::-webkit-scrollbar{
+    display: none;
+}
+
+.result-title{
+    margin: 40px 0px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.result img{
+    width: 40px;
+    border-radius: 50%;
+}
+
+.result-data{
+    display: flex;
+    align-items: start;
+    gap: 20px;
+}
+
+.loader{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.loader hr{
+    border-radius: 4px;
+    border: none;
+    background-color: #f6f7f8;
+    background: linear-gradient(to right,#9ed7ff,#ffffff,#9ed7ff);
+    background-size: 800px 50px;
+    height: 20px;
+    animation: loader 3s infinite linear;
+}
+
+@keyframes loader{
+    0%{
+        background-position: -800px 0px;
+    }
+    100%{
+        background-position: 800px 0px;
+    }
+}
+
+.result-data p {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.8;
+}
+
+@media (max-width:600px){
+    .main-bottom input{
+        flex:none;
+        width: 150px;
+    }
+
+    .main-bottom img{
+        width: 20px;
+    }
+
+    .search-box{
+        padding: 5px 10px;
+    }
+
+    .search-box div{
+        gap:5px;
+    }
+
+    .main-container .greet{
+        margin: 10px 0px;
+        font-size: 40px;
+        color: #c4c7c5;
+        font-weight: 500;
+        padding: 20px;
+    }
+
+    .main .card {
+        height: 60px;
+        padding: 15px;
+        background-color: #f0f4f9;
+        border-radius: relative;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .main .cards img{
+        width: 25px;
+        padding: 5px;
+        position: absolute;
+        background-color: white;
+        border-radius: 20px;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .main .card:hover{
+        background-color: #dfe4ea;
+    
+    }
+
+    .main .card p{
+        color: #585858;
+        font-size: 15px;
+    }
+
+    .main-bottom{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        max-width: 900px;
+        padding: 0px 20px;
+        margin-bottom: 50px;
+    }
+
+}
+>>>>>>> greatstacklogic
