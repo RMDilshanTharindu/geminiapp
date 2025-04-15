@@ -198,4 +198,51 @@
     .search-box div{
         gap:5px;
     }
+
+    .main-container .greet{
+        margin: 10px 0px;
+        font-size: 40px;
+        color: #c4c7c5;
+        font-weight: 500;
+        padding: 20px;
+    }
+
+    .main .card {
+        height: 60px;
+        padding: 15px;
+        background-color: #f0f4f9;
+        border-radius: relative;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .main .cards img{
+        width: 25px;
+        padding: 5px;
+        position: absolute;
+        background-color: white;
+        border-radius: 20px;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .main .card:hover{
+        background-color: #dfe4ea;
+    
+    }
+
+    .main .card p{
+        color: #585858;
+        font-size: 15px;
+    }
+
+    .main-bottom{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        max-width: 900px;
+        padding: 0px 20px;
+        margin-bottom: 50px;
+    }
+
 }

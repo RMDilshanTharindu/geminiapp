@@ -17,12 +17,12 @@ const Sidebar = () => {
   return (
     <div className='sidebar'>
         <div className='top'>
-            <img onClick={()=>setExtended(pre=>!pre)} className='menu' src={assets.menu_icon} alt='' /><br/>
+            <img onClick={()=>setExtended(pre=>!pre)} className='menu-icon' src={assets.menu_icon} alt='' /><br/>
+            {extended?<>
             <div onClick={()=>newChat()} className='new-chat'>
                 <img src={assets.plus_icon} alt='' />
                 {extended?<p>New chat</p>:null}
             </div>
-            {extended?
               <div className='recent'>
               <p className='recent-title'>Recent</p>
               {uniqueFirstPromptList.map((item,index)=>{
@@ -34,22 +34,22 @@ const Sidebar = () => {
                     )
               })}
               
-          </div>
+          </div></>
             :null }
             
         </div>
 
         <div className='bottom'>
             <div className='bottom-item recent-entry'>
-                <img src={assets.question_icon} alt='' />
+                {extended?<img src={assets.question_icon} alt='' />:null}
                 {extended?<p>Help</p>:null}
             </div>
             <div className='bottom-item recent-entry'>
-                <img src={assets.history_icon} alt='' />
+                {extended?<img src={assets.history_icon} alt='' />:null}
                 {extended?<p>History</p>:null}
             </div>
             <div className='bottom-item recent-entry'>
-                <img src={assets.setting_icon} alt='' />
+                {extended?<img src={assets.setting_icon} alt='' />:null}
                 {extended?<p>Setting</p>:null}
             </div>
 
