@@ -149,11 +149,13 @@ const ContextProvider = (props) => {
             }
         }
 
+         let newResponse = newArray.split("*").join("</br>");
+         //let newResponseArray = newResponse.split(" ");
         setCurrentChat(prev => [
             ...prev,
             {
                 user: finalPrompt,
-                gemini: newArray
+                gemini: newResponse
             }
         ]);
 
