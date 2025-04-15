@@ -1,6 +1,6 @@
 const chatHandler = async (prompt) => {
     try {
-      const res = await fetch('http://localhost:4000/chat', {
+      const res = await fetch('https://geminibackend-4dzq.onrender.com/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
