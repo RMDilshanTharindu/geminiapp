@@ -14,6 +14,7 @@ const ContextProvider = (props) => {
     const [chatHistory, setChatHistory] = useState([]);
     const [firstPrompt, setFirstPrompt] = useState('');
     const [firstPromptList, setFirstPromptList] = useState([]);
+    const [uniqueFirstPromptList,setUniqueFirstPromptList] = useState([]);
 
     const isFirstPromptSent = useRef(false);
 
@@ -64,6 +65,21 @@ const ContextProvider = (props) => {
             console.log("Old chat loaded:", currentChat);
         }
     }, [currentChat]);
+
+
+    useEffect(() => {
+        setUniqueFirstPromptList(prev => {
+            const newList = [...prev];
+            firstPromptList.forEach(prompt => {
+                if (!newList.includes(prompt)) {
+                    newList.push(prompt);
+                }
+            });
+            return newList;
+        });
+    }, [firstPromptList]); // This will only run when firstPromptList changes
+    
+    
 
     const newChat = () => {
         setLoading(false);
@@ -159,7 +175,8 @@ const ContextProvider = (props) => {
         currentChat,
         firstPromptList,
         chatHistory,
-        loadOldChats
+        loadOldChats,
+        uniqueFirstPromptList
     };
 
     return (
